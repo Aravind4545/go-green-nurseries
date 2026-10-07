@@ -133,14 +133,59 @@ document.addEventListener('DOMContentLoaded', () => {
       botanical: 'Annona squamosa',
       category: 'fruit',
       categoryLabel: 'Fruit Plant',
-      image: 'assets/images/gallery-9.jpg',
-      desc: 'Large fruit size, sweet creamy pulp with fewer seeds. Extremely hardy and drought-tolerant fruit variety.',
-      specs: ['Height: 2–3 ft', 'Drought Hardy', 'Grafted', 'Early Bearer'],
-      care: 'Requires minimal water. Thrives in dry, warm climates.'
+      image: 'assets/images/gallery-9.jpg'
+    },
+    {
+      id: 'jasmine-mogra',
+      name: 'Gundumalli & Madurai Jasmine (Mogra)',
+      botanical: 'Jasminum sambac',
+      category: 'flowering',
+      categoryLabel: 'Flowering & Shrub',
+      image: 'assets/images/gallery-10.jpg'
+    },
+    {
+      id: 'tecoma-golden',
+      name: 'Golden Trumpet (Tecoma Gaudi Chaudi)',
+      botanical: 'Tecoma stans',
+      category: 'flowering',
+      categoryLabel: 'Flowering & Shrub',
+      image: 'assets/images/gallery-12.jpg'
+    },
+    {
+      id: 'alphonso-totapuri',
+      name: 'Alphonso & Kesar Mango Grafted',
+      botanical: 'Mangifera indica',
+      category: 'fruit',
+      categoryLabel: 'Fruit Plant',
+      image: 'assets/images/gallery-13.jpg'
+    },
+    {
+      id: 'neem-shade-avenue',
+      name: 'Neem & Millettia Avenue Trees',
+      botanical: 'Azadirachta indica',
+      category: 'avenue',
+      categoryLabel: 'Avenue Tree',
+      image: 'assets/images/gallery-14.jpg'
+    },
+    {
+      id: 'hibiscus-hybrids',
+      name: 'Exotic Hybrid Hibiscus Varieties',
+      botanical: 'Hibiscus rosa-sinensis',
+      category: 'flowering',
+      categoryLabel: 'Flowering & Shrub',
+      image: 'assets/images/gallery-15.jpg'
+    },
+    {
+      id: 'red-sandalwood',
+      name: 'Red Sandalwood & Malabar Neem',
+      botanical: 'Pterocarpus santalinus',
+      category: 'avenue',
+      categoryLabel: 'Avenue Tree',
+      image: 'assets/images/gallery-16.jpg'
     }
   ];
 
-  // --- 2. Render Plant Catalog ---
+  // --- 2. Render Plant Catalog (Photo + Name Only) ---
   const plantsGrid = document.getElementById('plantsGrid');
   const catalogEmpty = document.getElementById('catalogEmpty');
   const searchInput = document.getElementById('plantSearch');
@@ -158,8 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const query = searchQuery.toLowerCase().trim();
       const matchesSearch = !query || 
         plant.name.toLowerCase().includes(query) || 
-        plant.botanical.toLowerCase().includes(query) ||
-        plant.desc.toLowerCase().includes(query) ||
+        (plant.botanical && plant.botanical.toLowerCase().includes(query)) ||
         plant.categoryLabel.toLowerCase().includes(query);
 
       return matchesCat && matchesSearch;
@@ -175,41 +219,25 @@ document.addEventListener('DOMContentLoaded', () => {
     if (catalogEmpty) catalogEmpty.style.display = 'none';
 
     plantsGrid.innerHTML = filtered.map(plant => `
-      <article class="plant-card" data-id="${plant.id}">
+      <a href="https://wa.me/919441734133?text=${encodeURIComponent(`Hello Go Green Nursery! I am inquiring about: *${plant.name}*. Please share available sizes and rates.`)}" 
+         target="_blank" 
+         rel="noopener" 
+         class="plant-card" 
+         aria-label="Inquire about ${plant.name} on WhatsApp">
         <div class="plant-img-wrap">
           <img src="${plant.image}" alt="${plant.name}" loading="lazy">
-          <span class="plant-category-badge">${plant.categoryLabel}</span>
+          <div class="plant-card-tag">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.976.58 2.029.924 3.15.925h.005c3.182 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.767-5.774-5.767zm0 10.334c-.958 0-1.895-.272-2.709-.785l-.194-.122-1.294.34.345-1.261-.134-.214c-.563-.895-.86-1.928-.859-2.992 0-2.518 2.049-4.567 4.57-4.567 2.52 0 4.569 2.049 4.57 4.567 0 2.52-2.048 4.569-4.568 4.569z"/>
+            </svg>
+            Inquire
+          </div>
         </div>
-        <div class="plant-content">
+        <div class="plant-card-body">
           <h3 class="plant-name">${plant.name}</h3>
-          <p class="plant-botanical">${plant.botanical}</p>
-          <p class="plant-desc">${plant.desc}</p>
-          <div class="plant-specs">
-            ${plant.specs.map(spec => `<span class="spec-pill">🌿 ${spec}</span>`).join('')}
-          </div>
-          <div class="plant-actions">
-            <button class="btn btn-secondary btn-sm btn-quickview" data-id="${plant.id}" title="Quick View">
-              View Info
-            </button>
-            <a href="https://wa.me/919441734133?text=${encodeURIComponent(`Hello Go Green Nursery! I am inquiring about: *${plant.name}*. Please share available sizes, current rates, and delivery details.`)}" 
-               target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.976.58 2.029.924 3.15.925h.005c3.182 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.767-5.774-5.767zm0 10.334c-.958 0-1.895-.272-2.709-.785l-.194-.122-1.294.34.345-1.261-.134-.214c-.563-.895-.86-1.928-.859-2.992 0-2.518 2.049-4.567 4.57-4.567 2.52 0 4.569 2.049 4.57 4.567 0 2.52-2.048 4.569-4.568 4.569z"/>
-              </svg>
-              WhatsApp
-            </a>
-          </div>
         </div>
-      </article>
+      </a>
     `).join('');
-
-    // Attach quick view listeners
-    document.querySelectorAll('.btn-quickview').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const id = e.currentTarget.getAttribute('data-id');
-        openQuickView(id);
-      });
-    });
   }
 
   // Initial render
